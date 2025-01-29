@@ -8,24 +8,20 @@ import reactor.core.publisher.Flux;
 
 @RestController
 public class chatController {
-
     private final ChatClient chatClient;
-
     // Builder->autoconfigured model in application Properties
     public chatController(ChatClient.Builder chatClient) {
         this.chatClient = chatClient.build();
     }
     //call() method sends a request to the AI model, and the content() method returns the AI model’s response as a String
-    // stream()
+    //stream()
     @GetMapping("/llm")
-    String result(){
-        String userInput = "hi mistral";
+    String result(@RequestParam String userInput){
         return this.chatClient.prompt()
                         .user(userInput)
                         .call()
                         .content();
     }
-
     @GetMapping("/stream")
     public Flux<String> chatWithStream(@RequestParam String message) {
         return chatClient.prompt()
